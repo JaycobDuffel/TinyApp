@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/duffelshuffel/TinyApp/issues"
   },
-  "homepage": "https://github.com/duffelshuffel/TinyApp#readme"
+  "homepage": "https://github.com/duffelshuffel/TinyApp#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
 }
