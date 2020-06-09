@@ -33,20 +33,22 @@ app.get("/urls/:shortURL", (req, res) => {
   res.render("urls_show", templateVars)
 })
 
-app.get("/", (req, res) => {
-  res.send("Hello!");
-});
-
-app.get("/urls.json", (req, res) => {
-  res.json(urlDatabase);
-});
-
-app.get("/hello", (req, res) => {
-  res.send("<html><body>Hello <b>World</b></body></html>\n")
-});
 app.post("/urls", (req, res) => {
-  console.log(req.body);  // Log the POST request body to the console
-  res.send("Ok");         // Respond with 'Ok' (we will replace this)
+  const shortURL = generateRandomString()
+  urlDatabase[shortURL] = req.body.longURL;
+  res.redirect(`/urls/${shortURL}`)
+});
+
+app.get("/u/:shortURL", (req, res) => {
+  // const longURL = ...
+
+ const shortURL = req.params.shortURL;
+ const longURL = urlDatabase[shortURL];
+ console.log(longURL)
+
+ res.redirect(longURL)
+// res.send("ok")
+  
 });
 
 app.listen(PORT, () => {
