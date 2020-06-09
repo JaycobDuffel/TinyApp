@@ -11,5 +11,22 @@
         <a class="nav-item nav-link" href="/urls/new">Create New URL</a>
       </div>
     </div>
+    <div>
+      You are logged in as:  <%=locals.username%>!  
+    </div>
+    <form method="POST" action="/login">
+      <div class="form-row align-items-center">
+        <div class="col-auto">
+          <div class="input-group mb-2">
+            <div class="input-group-prepend">
+            </div>
+            <input type="text" class="form-control" id="inlineFormInputGroup" name="username" placeholder="Enter a Username">
+          </div>
+        </div>
+        <div class="col-auto">
+          <button type="submit" class="btn btn-primary mb-2">Submit</button>
+        </div>
+      </div>
+    </form>
   </nav>
 </header>
