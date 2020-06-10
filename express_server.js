@@ -60,7 +60,7 @@ const user_id = req.cookies["user_id"]
 
 app.get("/login", (req, res) => {
 const user_id = req.cookies["user_id"]
-
+console.log(users);
   res.render("login_template", { users, user_id })
 })
 
@@ -123,13 +123,28 @@ app.post("/urls", (req, res) => {
   res.redirect(`/urls/${shortURL}`)
 });
 
-//logs user in and redirects to home page
-// app.post("/login", (req, res) => {
-//   console.log(req.body)
-//   const user = users[id];
-//   res.cookie('user_id', user.password )
-//   res.redirect('/urls');
-// });
+// logs user in and redirects to home page
+app.post("/login", (req, res) => {
+  const password = req.body.password;
+  const email = req.body.email;
+  let foundUser;
+  for (const userID in users) {
+    if (users[userID].email === email) {
+      foundUser = users[userID];
+    }
+  }
+  if (!foundUser) {
+    return res.status(400).send('no user with that email found')
+  }
+
+  if (foundUser.password === password) {
+    // correct user
+    res.cookie('user_id', foundUser.id);
+    return res.redirect('/urls');
+  }
+  
+  return res.status(400).send('incorrect password')
+});
 
 // deleting url 
 app.post("/urls/:shortURL/delete", (req, res) => {

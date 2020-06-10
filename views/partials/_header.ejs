@@ -9,7 +9,6 @@
       <div class="navbar-nav">
         <a class="nav-item nav-link" href="/urls" style="color: black;"><b>My URLs</b></a>
         <a class="nav-item nav-link" href="/urls/new" style="color: black;"><b>Create New URL</b></a>
-        <a class="nav-item nav-link" href="/register" style="color: black;"><b>Register!</b></a>
       </div>
     </div>
     <div>
@@ -18,7 +17,7 @@
       <form method="POST" action="/logout">
         <div class="form-row align-items-center">
           <div class="col-auto">
-            You are logged in as: <b><%=locals.users[user_id].email%></b>!
+            <b style="padding-right: 10px;">Logged in as <%=users[user_id].email%>!</b>
             <button type="submit" class="btn mb-2" style="background-color: darkblue; color: white;">Logout</button>
           </div>
         </div>
@@ -29,15 +28,10 @@
           <div class="col-auto">
             <div class="input-group mb-2">
               <div class="input-group-prepend">
+                <a class="nav-item nav-link" href="/login" style="color: black;"><b>Login</b></a>
+                <a class="nav-item nav-link" href="/register" style="color: black;"><b>Register</b></a>
               </div>
-              <input type="text" class="form-control"  name="username"
-                placeholder="Enter a Username" style="border: solid 1px darkblue; border-radius: 7px;">
             </div>
-          </div>
-          <div class="col-auto">
-            <button type="submit" class="btn mb-2" style="background-color: darkblue; color: white;">Submit</button>
-          </div>
-        </div>
       </form>
       <%}%>
           
