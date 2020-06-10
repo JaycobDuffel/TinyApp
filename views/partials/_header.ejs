@@ -14,7 +14,7 @@
     </div>
     <div>
       <!-- You are logged in as:  <%=locals.username%>!   -->
-      <%if (user_id) { %>
+      <%if (users[user_id]) { %>
       <form method="POST" action="/logout">
         <div class="form-row align-items-center">
           <div class="col-auto">

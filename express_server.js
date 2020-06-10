@@ -31,7 +31,6 @@ const users = {
   }
 };
 
-console.log(users['123'].id);
 
 // static GET requests
 app.get("/urls/new", (req, res) => {
@@ -91,11 +90,27 @@ app.post('/register', (req, res) => {
   const id = generateRandomString();
   const password = req.body.password;
   const email = req.body.email;
-  users[id] = {
+
+  if (!email || !password) {
+    return res.status(400).send('please enter a valid email and password')
+  }
+
+  let foundUser; 
+  for (const userID in users) {
+    if (users[userID].email === email) {
+      foundUser = users[userID];
+    };  
+  }
+
+  if (foundUser) {
+    return res.status(400).send('email taken')
+  }
+  const newUser = {
     id,
     email,
     password
   };
+  users[id] = newUser
   res.cookie('user_id', id)
   console.log(users);
   res.redirect('/urls')
