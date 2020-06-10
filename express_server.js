@@ -3,7 +3,7 @@ const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
 const express = require('express');
 const app = express();
-const PORT = 8080; // Default PORT 8080
+const PORT = 9190;
 
 // set the view engine to ejs
 app.set("view engine", "ejs");
@@ -33,24 +33,28 @@ const users = {
 
 const emailFinder = (users, email) => {
   for (const userID in users) {
-      if (users[userID].email === email) {
-        return foundUser = users[userID];
-      }
+    if (users[userID].email === email) {
+      return foundUser = users[userID];
     }
+  }
 };
 
 
 // static GET requests
 app.get("/urls/new", (req, res) => {
-const user_id = req.cookies["user_id"]
+  const user_id = req.cookies["user_id"];
+  if (user_id) {
+    res.render("urls_new", { users, user_id });
 
-  res.render("urls_new", { users, user_id });
+  } else {
+    return res.redirect('/login');
+  }
 });
 
 app.get("/urls", (req, res) => {
-const user_id = req.cookies["user_id"]
+  const user_id = req.cookies["user_id"];
+  let templateVars = { users, urls: urlDatabase, user_id };
 
-  let templateVars = { users, urls: urlDatabase, user_id};
   res.render("urls_index", templateVars);
 });
 
@@ -61,20 +65,21 @@ app.get("/", (req, res) => {
 
 // rendering register template
 app.get('/register', (req, res) => {
-const user_id = req.cookies["user_id"]
+  const user_id = req.cookies["user_id"]
 
-  res.render("register", { users, user_id})
+  res.render("register", { users, user_id })
 })
 
 app.get("/login", (req, res) => {
-const user_id = req.cookies["user_id"]
-console.log(users);
+  const user_id = req.cookies["user_id"]
+  console.log(users);
   res.render("login_template", { users, user_id })
 })
 
 // dynamic GET requests
 app.get("/urls/:shortURL", (req, res) => {
-  let templateVars = { shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL], username: req.cookies["username"] };
+  const user_id = req.cookies["user_id"];
+  let templateVars = { users, user_id, shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL] };
   res.render("urls_show", templateVars)
 });
 
@@ -104,7 +109,7 @@ app.post('/register', (req, res) => {
   }
 
   let foundUser = emailFinder(users, email);
-  
+
 
   if (foundUser) {
     return res.status(400).send('email taken')
@@ -142,20 +147,32 @@ app.post("/login", (req, res) => {
     res.cookie('user_id', foundUser.id);
     return res.redirect('/urls');
   }
-  
+
   return res.status(400).send('incorrect password')
 });
 
 // deleting url 
 app.post("/urls/:shortURL/delete", (req, res) => {
-  delete urlDatabase[req.params.shortURL];
-  res.redirect("/urls");
+
+  const user_id = req.cookies["user_id"];
+  if (user_id) {
+    delete urlDatabase[req.params.shortURL];
+  } else {
+    return res.redirect('/login');
+  }
+  return res.redirect("/urls");
 })
 
 // sends user to edit page
 app.post("/urls/:id", (req, res) => {
-  res.redirect(`/urls/${req.params.id}`)
-});
+
+  const user_id = req.cookies["user_id"];
+  if (user_id) {
+    res.redirect(`/urls/${req.params.id}`)
+  } else {
+    return res.redirect('/login');
+  }
+})
 
 // dynamic POST requests
 
