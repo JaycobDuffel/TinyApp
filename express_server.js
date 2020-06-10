@@ -37,6 +37,10 @@ app.get("/urls/:shortURL", (req, res) => {
 app.get("/", (req, res) => {
   // redirecting from root to url page
   res.redirect('/urls');
+});
+
+app.get('/register', (req, res) => {
+  res.render("login_template", {username: req.cookies["username"]})
 })
 
 app.post('/logout', (req, res) => {
