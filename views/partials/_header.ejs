@@ -1,32 +1,47 @@
 <header>
   <nav class="navbar navbar-expand-lg navbar-light" style="background-color: darkorange;">
-    <a class="navbar-brand" href="/urls">TinyApp</a>
+    <a class="navbar-brand" href="/urls"><b>TinyApp</b></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
       aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
       <div class="navbar-nav">
-        <a class="nav-item nav-link" href="/urls">My URLs</a>
-        <a class="nav-item nav-link" href="/urls/new">Create New URL</a>
+        <a class="nav-item nav-link" href="/urls" style="color: black;"><b>My URLs</b></a>
+        <a class="nav-item nav-link" href="/urls/new" style="color: black;"><b>Create New URL</b></a>
       </div>
     </div>
     <div>
-      You are logged in as:  <%=locals.username%>!  
-    </div>
-    <form method="POST" action="/login">
-      <div class="form-row align-items-center">
-        <div class="col-auto">
-          <div class="input-group mb-2">
-            <div class="input-group-prepend">
-            </div>
-            <input type="text" class="form-control" id="inlineFormInputGroup" name="username" placeholder="Enter a Username">
+      <!-- You are logged in as:  <%=locals.username%>!   -->
+      <%if (username) { %>
+      <form method="POST" action="/logout">
+        <div class="form-row align-items-center">
+          <div class="col-auto">
+            You are logged in as: <b><%=locals.username%></b>!
+            <button type="submit" class="btn mb-2" style="background-color: darkblue; color: white;">Logout</button>
           </div>
         </div>
-        <div class="col-auto">
-          <button type="submit" class="btn btn-primary mb-2">Submit</button>
+      </form>
+      <% } else { %>
+      <form method="POST" action="/login">
+        <div class="form-row align-items-center">
+          <div class="col-auto">
+            <div class="input-group mb-2">
+              <div class="input-group-prepend">
+              </div>
+              <input type="text" class="form-control"  name="username"
+                placeholder="Enter a Username" style="border: solid 1px darkblue; border-radius: 7px;">
+            </div>
+          </div>
+          <div class="col-auto">
+            <button type="submit" class="btn mb-2" style="background-color: darkblue; color: white;">Submit</button>
+          </div>
         </div>
-      </div>
-    </form>
+      </form>
+      <%}%>
+          
+         
+    </div>
+    
   </nav>
 </header>

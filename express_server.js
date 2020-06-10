@@ -23,7 +23,7 @@ const urlDatabase = {
 };
 
 app.get("/urls/new", (req, res) => {
-  res.render("urls_new");
+  res.render("urls_new", {username: req.cookies["username"]});
 });
 
 app.get("/urls", (req, res) => {
@@ -39,21 +39,31 @@ app.get("/", (req, res) => {
   res.redirect('/urls');
 })
 
+app.post('/logout', (req, res) => {
+  // clear cookies to logout
+  res.clearCookie('username');
+  res.redirect('/urls');
+});
+
 app.post("/urls", (req, res) => {
   const shortURL = generateRandomString()
   urlDatabase[shortURL] = req.body.longURL;
   res.redirect(`/urls/${shortURL}`)
 });
 
-app.post("/urls/:shortURL/delete", (req, res) => {
-  // deleting url 
-  delete urlDatabase[req.params.shortURL];
 
+// deleting url 
+app.post("/urls/:shortURL/delete", (req, res) => {
+  delete urlDatabase[req.params.shortURL];
   res.redirect("/urls");
 })
+
+// sends user to edit page
 app.post("/urls/:id", (req, res) => {
   res.redirect(`/urls/${req.params.id}`)
 });
+
+//logs user in and redirects to home page
 app.post("/login", (req, res) => {
   res.cookie('username', req.body.username)
   res.redirect('/urls');
