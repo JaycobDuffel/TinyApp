@@ -7,7 +7,7 @@ const PORT = 8080; // Default PORT 8080
 
 // set the view engine to ejs
 app.set("view engine", "ejs");
-// configuring body-parser
+// middleware
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 
@@ -29,6 +29,14 @@ const users = {
     email: '123@123.com',
     password: "123123"
   }
+};
+
+const emailFinder = (users, email) => {
+  for (const userID in users) {
+      if (users[userID].email === email) {
+        return foundUser = users[userID];
+      }
+    }
 };
 
 
@@ -95,12 +103,8 @@ app.post('/register', (req, res) => {
     return res.status(400).send('please enter a valid email and password')
   }
 
-  let foundUser; 
-  for (const userID in users) {
-    if (users[userID].email === email) {
-      foundUser = users[userID];
-    };  
-  }
+  let foundUser = emailFinder(users, email);
+  
 
   if (foundUser) {
     return res.status(400).send('email taken')
@@ -127,12 +131,8 @@ app.post("/urls", (req, res) => {
 app.post("/login", (req, res) => {
   const password = req.body.password;
   const email = req.body.email;
-  let foundUser;
-  for (const userID in users) {
-    if (users[userID].email === email) {
-      foundUser = users[userID];
-    }
-  }
+  let foundUser = emailFinder(users, email)
+
   if (!foundUser) {
     return res.status(400).send('no user with that email found')
   }
