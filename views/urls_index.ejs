@@ -10,13 +10,13 @@
 <body>
   <%- include('partials/_header') %>
   <main style="margin: 1em;">
-   
+
     <% if (user_id)  {%>
-      <% const usersUrls = urlsForUser(user_id, urls)%>
-        <% if (Object.keys(usersUrls).length === 0) { %>
-          <p style="font-size: xx-large;">You have no URLS yet! Create some <a href="/urls/new">here</a>!</p>
-          <% } else if (Object.keys(usersUrls).length > 0){ %>
-      <h3>My URLs</h3>
+    <% const usersUrls = urlsForUser(user_id, urls)%>
+    <% if (Object.keys(usersUrls).length === 0) { %>
+    <p style="font-size: xx-large;">You have no URLS yet! Create some <a href="/urls/new">here</a>!</p>
+    <% } else if (Object.keys(usersUrls).length > 0){ %>
+    <h3>My URLs</h3>
     <table class="table">
       <thead>
         <tr>
@@ -28,30 +28,28 @@
         </tr>
       </thead>
       <tbody>
-        
-       <% for (const url in usersUrls) { %>
-        
-          
+        <% for (const url in usersUrls) { %>
         <tr>
           <td><a href="<%= urls[url]['longURL']%>" target="_blank"><%= url %></a></td>
           <td><%= usersUrls[url]['longURL'] %></td>
-          <td><form method="POST" action="urls/<%=url%>/"><button type="submit" class="btn btn-outline-primary">Edit</button></form></td>
-
-          <td><form method="POST" action="urls/<%=url%>/delete"><button type="submit" class="btn btn-outline-danger">Delete</button></form></td>
+          <td>
+            <form method="POST" action="urls/<%=url%>/"><button type="submit"
+                class="btn btn-outline-primary">Edit</button></form>
+          </td>
+          <td>
+            <form method="POST" action="urls/<%=url%>/delete"><button type="submit"
+                class="btn btn-outline-danger">Delete</button></form>
+          </td>
         </tr>
-      
       </tbody>
       <% } %>
     </table>
     <%}%>
-    
-      
-   
-      <% } else {%>
-        <div>
-          <p style="font-size: xx-large;">Please login to see your URLS!</p>
-        </div>
-        <%}%>
+     <% } else {%>
+    <div>
+      <p style="font-size: xx-large;">Please login to see your URLS!</p>
+    </div>
+    <%}%>
         
 
   </main>

@@ -26,13 +26,13 @@ const urlDatabase = {
 const users = {};
 
 const urlsForUser = (id, urls) => {
-let resultURL = {};
-for (const url in urls) {
-  if (urls[url]['user_id'] === id) {
-    resultURL[url] = urls[url];
+  let resultURL = {};
+  for (const url in urls) {
+    if (urls[url]['user_id'] === id) {
+      resultURL[url] = urls[url];
+    }
   }
-}
-return resultURL;
+  return resultURL;
 };
 
 const emailFinder = (users, email) => {
@@ -49,7 +49,6 @@ app.get("/urls/new", (req, res) => {
   const user_id = req.cookies["user_id"];
   if (user_id) {
     res.render("urls_new", { users, user_id });
-
   } else {
     return res.redirect('/login');
   }
@@ -57,9 +56,8 @@ app.get("/urls/new", (req, res) => {
 
 app.get("/urls", (req, res) => {
   const user_id = req.cookies["user_id"];
-  let templateVars = { users, urls: urlDatabase, user_id, urlsForUser};
- 
-    return res.render("urls_index", templateVars); 
+  let templateVars = { users, urls: urlDatabase, user_id, urlsForUser };
+  return res.render("urls_index", templateVars);
 });
 
 // redirecting from root to url page
@@ -69,27 +67,31 @@ app.get("/", (req, res) => {
 
 // rendering register template
 app.get('/register', (req, res) => {
-  const user_id = req.cookies["user_id"]
-
-  res.render("register", { users, user_id })
+  const user_id = req.cookies["user_id"];
+  res.render("register", { users, user_id });
 })
 
 app.get("/login", (req, res) => {
-  const user_id = req.cookies["user_id"]
-  res.render("login_template", { users, user_id })
+  const user_id = req.cookies["user_id"];
+  res.render("login_template", { users, user_id });
 })
 
 // dynamic GET requests
 app.get("/urls/:shortURL", (req, res) => {
   const user_id = req.cookies["user_id"];
-  let templateVars = { users, user_id, shortURL: req.params.shortURL, longURL: urlDatabase[req.params.shortURL]['longURL'] };
+  let templateVars = {
+    users,
+    user_id,
+    shortURL: req.params.shortURL,
+    longURL: urlDatabase[req.params.shortURL]['longURL']
+  };
   res.render("urls_show", templateVars)
 });
 app.get('/u/:id', (req, res) => {
   const shortURL = req.params.id;
   const longURL = urlDatabase[shortURL]['longURL'];
   res.redirect(longURL);
-  
+
 })
 // Sending user to "longURL" when clicking "shortUrl"
 app.get("/u/:shortURL", (req, res) => {
@@ -137,7 +139,7 @@ app.post('/register', (req, res) => {
 app.post("/urls", (req, res) => {
   const user_id = req.cookies["user_id"];
   const shortURL = generateRandomString()
-  urlDatabase[shortURL] = {'longURL': req.body.longURL, user_id};
+  urlDatabase[shortURL] = { 'longURL': req.body.longURL, user_id };
   res.redirect(`/urls/${shortURL}`)
 });
 
@@ -164,15 +166,12 @@ app.post("/login", (req, res) => {
 app.post("/urls/:shortURL/delete", (req, res) => {
   const shortURL = req.params.shortURL;
   const user_id = req.cookies["user_id"];
-  console.log(shortURL);
-  console.log(user_id);
-  console.log(urlDatabase[shortURL]['user_id']);
   if (user_id === urlDatabase[shortURL]['user_id']) {
     delete urlDatabase[req.params.shortURL];
     return res.redirect('/urls');
-  } 
-    return res.send('you cant delete that')
-  
+  }
+  return res.send('you cant delete that')
+
 });
 
 // sends user to edit page
@@ -196,5 +195,5 @@ app.post("/urls/:id/update", (req, res) => {
 
 // assigning a port for the server to listen on
 app.listen(PORT, () => {
-  console.log(`tinyApp listening on port ${PORT}!`);
+  console.log(`TinyApp listening on port ${PORT}!`);
 });
