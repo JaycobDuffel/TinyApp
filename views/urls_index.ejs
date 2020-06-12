@@ -8,9 +8,9 @@
 </head>
 
 <body>
+  <!-- bringing in partial -->
   <%- include('partials/_header') %>
   <main style="margin: 1em;">
-
     <% if (user_id)  {%>
     <% const usersUrls = urlsForUser(user_id, urls)%>
     <% if (Object.keys(usersUrls).length === 0) { %>
